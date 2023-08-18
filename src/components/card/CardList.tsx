@@ -32,7 +32,7 @@ const CardList: React.FC<CardListProps> = ({ name, phone, onClick }) => {
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="secondary" size="sm">
+          <Button variant="ghost" size="sm">
             <MoreVertical size={16} />
           </Button>
         </DropdownMenuTrigger>
