@@ -7,6 +7,7 @@ import Navbar from "@/src/components/navbar/Navbar";
 import { Button } from "@/src/components/ui/button";
 
 import Filter from "./_components/Filter";
+import AddPhoneDialog from "./_components/AddPhoneDialog";
 
 import ListPhones from "./ListPhones";
 
@@ -39,9 +40,7 @@ export default function PhonebookPage() {
                     <Search size={22} />
                   </Button>
                 </Link>
-                <Button variant="ghost">
-                  <PlusCircle size={22} color="#16A34A" />
-                </Button>
+                <AddPhoneDialog />
               </div>
             </div>
           </div>
