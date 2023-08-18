@@ -18,7 +18,7 @@ if (process.env.NODE_ENV === "development") {
 
 function makeClient() {
   const httpLink = new HttpLink({
-    uri: "",
+    uri: "https://wpe-hiring.tokopedia.net/graphql",
   });
 
   return new NextSSRApolloClient({

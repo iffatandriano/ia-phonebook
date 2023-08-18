@@ -10,27 +10,21 @@ import Filter from "./_components/Filter";
 import AddPhoneDialog from "./_components/AddPhoneDialog";
 
 import ListPhones from "./ListPhones";
+import { getClient } from "@/src/graphql/client";
+import { GetContactListDocument } from "@/src/graphql/contact/contacts.generated";
 
-const datas = [
-  {
-    name: "Iffat",
-    phone: "+62 852 1234 1233",
-  },
-  {
-    name: "Iffat Andriano",
-    phone: "+62 852 1234 1233",
-  },
-  {
-    name: "Andriano",
-    phone: "+62 852 1234 1233",
-  },
-];
+export default async function PhonebookPage() {
+  const { data } = await getClient().query({
+    query: GetContactListDocument,
+    variables: {
+      order_by: { created_at: "desc" },
+    },
+  });
 
-export default function PhonebookPage() {
   return (
     <Container>
       <div className="flex flex-col">
-        <div className="min-h-screen flex flex-col gap-3">
+        <div className="min-h-screen flex flex-col gap-1">
           <div className="bg-white rounded-[8px]">
             <div className="flex py-2 px-4 justify-between items-center">
               <h1 className="font-semibold text-md">Phonebook</h1>
@@ -45,7 +39,7 @@ export default function PhonebookPage() {
             </div>
           </div>
           <Filter />
-          <ListPhones datas={datas} />
+          <ListPhones datas={data?.contact} />
         </div>
         <Navbar />
       </div>

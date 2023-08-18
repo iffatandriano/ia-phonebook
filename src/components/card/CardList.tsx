@@ -13,21 +13,30 @@ import {
 } from "../ui/dropdown-menu";
 
 interface CardListProps {
-  name: string;
-  phone: any;
+  first_name: string;
+  last_name: string;
+  phones: any;
   onClick: () => void;
 }
 
-const CardList: React.FC<CardListProps> = ({ name, phone, onClick }) => {
+const CardList: React.FC<CardListProps> = ({
+  first_name,
+  last_name,
+  phones,
+  onClick,
+}) => {
   return (
     <div className="flex justify-between items-center">
       <div className="flex items-center gap-2">
         <div className="w-14 h-14 rounded-full border border-gray-200 flex justify-center items-center">
-          IA
+          {first_name?.charAt(0)}
+          {last_name?.charAt(0)}
         </div>
         <div className="flex flex-col">
-          <h1 className="text-md">{name}</h1>
-          <span className="text-[10px] text-zinc-400">{phone}</span>
+          <h1 className="text-md">
+            {first_name} {last_name}
+          </h1>
+          <span className="text-[10px] text-zinc-400">{phones[0]?.number}</span>
         </div>
       </div>
       <DropdownMenu>

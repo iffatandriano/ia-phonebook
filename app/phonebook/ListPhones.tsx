@@ -17,20 +17,22 @@ const ListPhones: React.FC<ListPhonesProps> = ({ datas }) => {
       {datas?.map((item: any, itemIndex: number) => (
         <CardGrid
           key={itemIndex}
-          name={item.name}
-          phone={item.phone}
+          first_name={item.first_name}
+          last_name={item.last_name}
+          phones={item.phones}
           onClick={() => {}}
         />
       ))}
     </div>
   ) : (
     <div className="mx-2 p-1 bg-white rounded-[8px]">
-      <div className="py-2 px-4 flex flex-col gap-4 mb-10">
+      <div className="py-2 px-4 flex flex-col gap-4">
         {datas?.map((item: any, itemIndex: number) => (
           <CardList
             key={itemIndex}
-            name={item.name}
-            phone={item.phone}
+            first_name={item.first_name}
+            last_name={item.last_name}
+            phones={item.phones}
             onClick={() => {}}
           />
         ))}

@@ -2,11 +2,11 @@ import type { CodegenConfig } from "@graphql-codegen/cli";
 
 const config: CodegenConfig = {
   overwrite: true,
-  schema: "",
-  documents: ["src/graphql/**/*.graphql"],
+  schema: "https://wpe-hiring.tokopedia.net/graphql",
+  documents: ["./src/graphql/**/*.graphql"],
   generates: {
-    "src/graphql/types.generated.ts": { plugins: ["typescript"] },
-    "src/graphql/": {
+    "./src/graphql/types.generated.ts": { plugins: ["typescript"] },
+    "./src/graphql/": {
       preset: "near-operation-file",
       presetConfig: {
         extension: ".generated.ts",
