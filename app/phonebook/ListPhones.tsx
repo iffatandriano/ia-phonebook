@@ -32,7 +32,7 @@ const ListPhones: React.FC<ListPhonesProps> = ({ datas, page }) => {
         currentParams.delete("page", undefined);
         router.push(`${pathname}?${currentParams.toString()}`);
       } else {
-        currentParams.set("page", `backPage`);
+        currentParams.set("page", `${page - 1}`);
         router.push(`${pathname}?${currentParams.toString()}`);
       }
     },

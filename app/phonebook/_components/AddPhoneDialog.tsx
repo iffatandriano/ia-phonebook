@@ -23,9 +23,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "@/src/components/ui/use-toast";
 import { cn } from "@/src/lib/utils";
 import { useMutation } from "@apollo/client";
-import { AddNewContactListDocument } from "@/src/graphql/contact/contacts.generated";
+import {
+  AddNewContactListDocument,
+  GetContactListDocument,
+} from "@/src/graphql/contact/contacts.generated";
 import { useRouter } from "next/navigation";
 import { ToastAction } from "@/src/components/ui/toast";
+import { Order_By } from "@/src/graphql/types.generated";
 
 const AddPhoneDialog = () => {
   const { toast } = useToast();
@@ -61,13 +65,24 @@ const AddPhoneDialog = () => {
           ...formDatas,
           phones: formDatas.phones,
         },
+        refetchQueries: [
+          {
+            query: GetContactListDocument,
+            variables: {
+              limit: 10,
+              offset: 0,
+              order_by: {
+                id: Order_By.DescNullsLast,
+              },
+            },
+          },
+        ],
       })
         .then((resp) => {
           toast({
             description: (
               <span className="mt-2 rounded-md p-2 text-green-600 font-semibold">
                 You new contact has been created.{" "}
-                <code>{JSON.stringify(formDatas, null, 2)}</code>
               </span>
             ),
           });

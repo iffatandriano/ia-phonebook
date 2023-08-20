@@ -27,16 +27,20 @@ export default async function PhonebookPage({
     query: GetContactListDocument,
     variables: {
       limit: 10,
-      offset: _.isNaN(searchParams?.page) ? 0 : Number(searchParams?.page),
+      offset:
+        _.isNaN(searchParams?.page) || _.isUndefined(searchParams?.page)
+          ? 0
+          : Number(searchParams?.page),
       order_by:
         searchParams?.sort_by === "a-z" || searchParams?.sort_by === "z-a"
           ? {
               first_name:
-                searchParams?.sort_by === "a-z" ? Order_By.Asc : Order_By.Desc,
-              created_at: Order_By.Desc,
+                searchParams?.sort_by === "a-z"
+                  ? Order_By.AscNullsLast
+                  : Order_By.AscNullsLast,
             }
           : {
-              created_at: Order_By.Desc,
+              id: Order_By.DescNullsLast,
             },
     },
   });
