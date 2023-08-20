@@ -11,20 +11,23 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { useRouter } from "next/navigation";
 
 interface CardGridProps {
+  id: string;
   first_name: string;
   last_name: string;
   phones: any;
-  onClick: () => void;
 }
 
 const CardGrid: React.FC<CardGridProps> = ({
+  id,
   first_name,
   last_name,
   phones,
-  onClick,
 }) => {
+  const router = useRouter();
+
   return (
     <div className="bg-white rounded-[8px]">
       <div className="flex justify-between items-center py-2 px-2">
@@ -49,12 +52,12 @@ const CardGrid: React.FC<CardGridProps> = ({
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="z-10 mr-16 bg-white rounded-[8px]">
-            <DropdownMenuLabel>Setting Phones</DropdownMenuLabel>
-            <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>Details</DropdownMenuItem>
-              <DropdownMenuItem>Edit</DropdownMenuItem>
-              <DropdownMenuItem>Delete</DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => router.push(`/phonebook/contact/${id}`)}
+              >
+                View details
+              </DropdownMenuItem>
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>

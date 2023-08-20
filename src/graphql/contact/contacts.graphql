@@ -14,6 +14,18 @@ query GetContactList(
   }
 }
 
+query GetDetailsContactById($id: Int!) {
+  contact_by_pk(id: $id) {
+    id
+    first_name
+    last_name
+    phones {
+      number
+    }
+    created_at
+  }
+}
+
 mutation addNewContactList(
   $first_name: String!
   $last_name: String!

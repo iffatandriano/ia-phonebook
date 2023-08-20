@@ -12,20 +12,22 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Phone } from "@/src/utils/types";
+import { useRouter } from "next/navigation";
 
 interface CardListProps {
+  id: number;
   first_name: string;
   last_name: string;
   phones: Array<Phone>;
-  onClick: () => void;
 }
 
 const CardList: React.FC<CardListProps> = ({
+  id,
   first_name,
   last_name,
   phones,
-  onClick,
 }) => {
+  const router = useRouter();
   return (
     <div className="flex justify-between items-center">
       <div className="flex items-center gap-2">
@@ -47,12 +49,12 @@ const CardList: React.FC<CardListProps> = ({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="z-10 mr-12 bg-white rounded-[8px]">
-          <DropdownMenuLabel>Setting Phones</DropdownMenuLabel>
-          <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem>Details</DropdownMenuItem>
-            <DropdownMenuItem>Edit</DropdownMenuItem>
-            <DropdownMenuItem>Delete</DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => router.push(`/phonebook/contact/${id}`)}
+            >
+              View details
+            </DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
