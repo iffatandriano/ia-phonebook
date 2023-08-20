@@ -11,11 +11,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { Phone } from "@/src/utils/types";
 
 interface CardListProps {
   first_name: string;
   last_name: string;
-  phones: any;
+  phones: Array<Phone>;
   onClick: () => void;
 }
 

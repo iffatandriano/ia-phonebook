@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { PlusCircle, Search } from "lucide-react";
+import { Search } from "lucide-react";
 
 import Container from "@/src/components/Container";
 import Navbar from "@/src/components/navbar/Navbar";
@@ -10,13 +10,22 @@ import Filter from "./_components/Filter";
 import AddPhoneDialog from "./_components/AddPhoneDialog";
 
 import ListPhones from "./ListPhones";
+
 import { getClient } from "@/src/graphql/client";
 import { GetContactListDocument } from "@/src/graphql/contact/contacts.generated";
 
-export default async function PhonebookPage() {
+interface PhonebookPageProps {
+  searchParams: any;
+}
+
+export default async function PhonebookPage({
+  searchParams,
+}: PhonebookPageProps) {
   const { data } = await getClient().query({
     query: GetContactListDocument,
     variables: {
+      limit: 10,
+      offset: Number(searchParams?.page) | 0,
       order_by: { created_at: "desc" },
     },
   });
@@ -24,7 +33,7 @@ export default async function PhonebookPage() {
   return (
     <Container>
       <div className="flex flex-col">
-        <div className="min-h-screen flex flex-col gap-1">
+        <div className="min-h-screen flex flex-col gap-1 mb-16">
           <div className="bg-white rounded-[8px]">
             <div className="flex py-2 px-4 justify-between items-center">
               <h1 className="font-semibold text-md">Phonebook</h1>
@@ -39,7 +48,10 @@ export default async function PhonebookPage() {
             </div>
           </div>
           <Filter />
-          <ListPhones datas={data?.contact} />
+          <ListPhones
+            datas={data?.contact}
+            page={Number(searchParams?.page) | 0}
+          />
         </div>
         <Navbar />
       </div>
