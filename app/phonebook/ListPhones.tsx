@@ -1,6 +1,6 @@
 "use client";
 import React, { useCallback } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import _ from "lodash";
 
 import CardGrid from "@/src/components/card/CardGrid";
@@ -20,23 +20,34 @@ const ListPhones: React.FC<ListPhonesProps> = ({ datas, page }) => {
 
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   const previousPage = useCallback(
     (page: number) => {
       const backPage = page - 1;
+      const currentParams = new URLSearchParams(
+        Array.from(searchParams.entries())
+      );
       if (backPage === 0) {
-        return router.push(`${pathname}`);
+        currentParams.delete("page", undefined);
+        router.push(`${pathname}?${currentParams.toString()}`);
+      } else {
+        currentParams.set("page", `backPage`);
+        router.push(`${pathname}?${currentParams.toString()}`);
       }
-      router.push(`${pathname}?page=${page - 1}`);
     },
-    [pathname, router]
+    [pathname, router, searchParams]
   );
 
   const nextPage = useCallback(
     (page: number) => {
-      router.push(`${pathname}?page=${page + 1}`);
+      const currentParams = new URLSearchParams(
+        Array.from(searchParams.entries())
+      );
+      currentParams.set("page", `${page + 1}`);
+      router.push(`${pathname}?${currentParams.toString()}`);
     },
-    [pathname, router]
+    [pathname, router, searchParams]
   );
 
   return listViewMenu === "list-grid" ? (

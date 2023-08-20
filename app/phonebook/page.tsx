@@ -13,6 +13,8 @@ import ListPhones from "./ListPhones";
 
 import { getClient } from "@/src/graphql/client";
 import { GetContactListDocument } from "@/src/graphql/contact/contacts.generated";
+import _ from "lodash";
+import { Order_By } from "@/src/graphql/types.generated";
 
 interface PhonebookPageProps {
   searchParams: any;
@@ -25,8 +27,17 @@ export default async function PhonebookPage({
     query: GetContactListDocument,
     variables: {
       limit: 10,
-      offset: Number(searchParams?.page) | 0,
-      order_by: { created_at: "desc" },
+      offset: _.isNaN(searchParams?.page) ? 0 : Number(searchParams?.page),
+      order_by:
+        searchParams?.sort_by === "a-z" || searchParams?.sort_by === "z-a"
+          ? {
+              first_name:
+                searchParams?.sort_by === "a-z" ? Order_By.Asc : Order_By.Desc,
+              created_at: Order_By.Desc,
+            }
+          : {
+              created_at: Order_By.Desc,
+            },
     },
   });
 

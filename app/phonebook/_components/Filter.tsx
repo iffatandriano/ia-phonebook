@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 
 import { Button } from "@/src/components/ui/button";
 import { StretchHorizontal, Table } from "lucide-react";
@@ -14,9 +14,21 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/src/components/ui/dropdown-menu";
+import { usePathname, useRouter } from "next/navigation";
 
 const Filter = () => {
   const { setListViewMenu, listViewMenu } = useViewMenus();
+
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const [sortBy, setSortBy] = useState("latest");
+
+  const handleSort = (value: string) => {
+    setSortBy(value);
+    router.push(`${pathname}?sort_by=${value}`);
+  };
+
   return (
     <div className="mx-2 p-1">
       <div className="flex justify-between items-center bg-white rounded-[8px]">
@@ -24,25 +36,19 @@ const Filter = () => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="sm">
-                Filter By
+                Sort
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuLabel>Filter by</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuRadioGroup value="created_at">
-                <DropdownMenuRadioItem value="first_name">
-                  First name
+            <DropdownMenuContent className="ml-20">
+              <DropdownMenuRadioGroup value={sortBy} onValueChange={handleSort}>
+                <DropdownMenuRadioItem value="latest">
+                  Latest
                 </DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="last_name">
-                  Last name
-                </DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="a-z">A-Z</DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="z-a">Z-A</DropdownMenuRadioItem>
               </DropdownMenuRadioGroup>
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button variant="ghost" size="sm">
-            Sort
-          </Button>
         </div>
         <div className="flex">
           <Button variant="ghost" onClick={() => setListViewMenu("list")}>
