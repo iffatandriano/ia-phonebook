@@ -1,15 +1,14 @@
 "use client";
 import React, { useCallback } from "react";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import _ from "lodash";
 
 import CardGrid from "@/src/components/card/CardGrid";
 import CardList from "@/src/components/card/CardList";
-import { Button } from "@/src/components/ui/button";
 
 import useViewMenus from "@/src/lib/store/useMenu";
 import { Contact } from "@/src/utils/types";
+import Pagination from "@/src/components/Pagination";
 
 interface ListPhonesProps {
   datas: any;
@@ -53,33 +52,12 @@ const ListPhones: React.FC<ListPhonesProps> = ({ datas, page }) => {
           />
         ))}
       </div>
-      <div className="mt-8 px-4 mb-2 flex items-end justify-end">
-        <div className="flex items-center space-x-6 lg:space-x-8">
-          <div className="flex items-center space-x-2">
-            <Button
-              variant="ghost"
-              className="w-8 h-8 p-0"
-              disabled={page === 0}
-              onClick={() => previousPage(page)}
-            >
-              <span className="sr-only">Go to previous page</span>
-              <ChevronLeftIcon className="w-4 h-4" />
-            </Button>
-            <div className="p-0 flex items-center text-md font-medium">
-              {page + 1}
-            </div>
-            <Button
-              variant="ghost"
-              className="w-8 h-8 p-0"
-              disabled={_.isEmpty(datas)}
-              onClick={() => nextPage(page)}
-            >
-              <span className="sr-only">Go to next page</span>
-              <ChevronRightIcon className="w-4 h-4" />
-            </Button>
-          </div>
-        </div>
-      </div>
+      <Pagination
+        datas={datas}
+        page={page}
+        previousPage={previousPage}
+        nextPage={nextPage}
+      />
     </React.Fragment>
   ) : (
     <div className="mx-2 p-1 bg-white rounded-[8px]">
@@ -94,33 +72,12 @@ const ListPhones: React.FC<ListPhonesProps> = ({ datas, page }) => {
           />
         ))}
       </div>
-      <div className="mt-8 px-4 mb-2 flex items-end justify-end">
-        <div className="flex items-center space-x-6 lg:space-x-8">
-          <div className="flex items-center space-x-2">
-            <Button
-              variant="ghost"
-              className="w-8 h-8 p-0"
-              disabled={page === 0}
-              onClick={() => previousPage(page)}
-            >
-              <span className="sr-only">Go to previous page</span>
-              <ChevronLeftIcon className="w-4 h-4" />
-            </Button>
-            <div className="p-0 flex items-center text-md font-medium">
-              {page + 1}
-            </div>
-            <Button
-              variant="ghost"
-              className="w-8 h-8 p-0"
-              disabled={_.isEmpty(datas)}
-              onClick={() => nextPage(page)}
-            >
-              <span className="sr-only">Go to next page</span>
-              <ChevronRightIcon className="w-4 h-4" />
-            </Button>
-          </div>
-        </div>
-      </div>
+      <Pagination
+        datas={datas}
+        page={page}
+        previousPage={previousPage}
+        nextPage={nextPage}
+      />
     </div>
   );
 };
