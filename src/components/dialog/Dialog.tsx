@@ -53,7 +53,7 @@ const Dialog: React.FC<ModalProps> = ({
       <DialogContainer>
         <DialogTrigger asChild>{action}</DialogTrigger>
         {showModal ? (
-          <DialogContent className="max-w-[500px] bg-white z-50 rounded-[8px]">
+          <DialogContent className="max-w-[500px] h-[50vh] overflow-auto bg-white z-50 rounded-[8px]">
             <DialogHeader>
               <DialogTitle>{title}</DialogTitle>
               {description && (
@@ -61,7 +61,7 @@ const Dialog: React.FC<ModalProps> = ({
               )}
             </DialogHeader>
             {body && <div className="grid gap-4 py-4">{body}</div>}
-            <DialogFooter>
+            {/* <DialogFooter>
               <Button
                 variant="secondary"
                 onClick={handleSubmit}
@@ -69,7 +69,7 @@ const Dialog: React.FC<ModalProps> = ({
               >
                 {actionLabel}
               </Button>
-            </DialogFooter>
+            </DialogFooter> */}
           </DialogContent>
         ) : null}
       </DialogContainer>

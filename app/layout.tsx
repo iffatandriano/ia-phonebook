@@ -1,3 +1,4 @@
+import { Toaster } from "@/src/components/ui/toaster";
 import { ApolloWrapper } from "@/src/graphql/apollo-wrapper";
 import "@/src/styles/globals.css";
 import type { Metadata } from "next";
@@ -112,6 +113,7 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <ApolloWrapper>{children}</ApolloWrapper>
+        <Toaster />
       </body>
     </html>
   );
