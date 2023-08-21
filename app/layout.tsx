@@ -1,3 +1,5 @@
+import { Toaster } from "@/src/components/ui/toaster";
+import { ApolloWrapper } from "@/src/graphql/apollo-wrapper";
 import "@/src/styles/globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -109,7 +111,10 @@ export default function RootLayout({
         <link rel='apple-touch-startup-image' href='/images/apple_splash_640.png' sizes='640x1136' />
         --> */}
       </head>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <ApolloWrapper>{children}</ApolloWrapper>
+        <Toaster />
+      </body>
     </html>
   );
 }
