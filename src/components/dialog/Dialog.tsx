@@ -42,14 +42,6 @@ const Dialog: React.FC<ModalProps> = ({
     setShowModal(isOpen);
   }, [isOpen]);
 
-  const handleSubmit = useCallback(() => {
-    if (disabled) {
-      return;
-    }
-
-    onSubmit();
-  }, [disabled, onSubmit]);
-
   return (
     <>
       <DialogContainer>
