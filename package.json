@@ -5,7 +5,7 @@
   "scripts": {
     "postinstall": "yarn codegen",
     "dev": "next dev",
-    "prebuild": "yarn @apollo/experimental-nextjs-app-support run build && yarn codegen",
+    "prebuild": "next build && yarn codegen",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
