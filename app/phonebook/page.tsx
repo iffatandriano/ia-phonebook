@@ -16,6 +16,8 @@ import { GetContactListDocument } from "@/src/graphql/contact/contacts.generated
 import _ from "lodash";
 import { Order_By } from "@/src/graphql/types.generated";
 
+export const dynamic = "force-dynamic";
+
 interface PhonebookPageProps {
   searchParams: any;
 }

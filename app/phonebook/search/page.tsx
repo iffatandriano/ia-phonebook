@@ -7,6 +7,8 @@ import { getClient } from "@/src/graphql/client";
 import { Order_By } from "@/src/graphql/types.generated";
 import { FindContactByFirstnameDocument } from "@/src/graphql/contact/contacts.generated";
 
+export const dynamic = "force-dynamic";
+
 interface IParams {
   searchParams: {
     query: string;
