@@ -12,7 +12,7 @@ const nextConfig = withPWAConfig({
     appDir: true,
   },
   async redirects() {
-    await [
+    return [
       {
         source: "/",
         destination: "/phonebook",
