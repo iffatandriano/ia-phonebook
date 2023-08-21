@@ -36,11 +36,12 @@ export default async function PhonebookPage({
           ? {
               first_name:
                 searchParams?.sort_by === "a-z"
-                  ? Order_By.AscNullsLast
-                  : Order_By.AscNullsLast,
+                  ? Order_By.AscNullsFirst
+                  : Order_By.DescNullsFirst,
             }
           : {
-              id: Order_By.DescNullsLast,
+              id: Order_By.DescNullsFirst,
+              created_at: Order_By.Desc,
             },
     },
   });

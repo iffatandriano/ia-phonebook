@@ -13,14 +13,15 @@ import { Button } from "../ui/button";
 
 interface ModalProps {
   isOpen: boolean;
-  onSubmit: () => void;
+  onSubmit?: () => void;
   title?: string;
   description?: string;
   body?: React.ReactElement;
-  footer?: React.ReactElement;
+  footer?: boolean;
   action?: React.ReactElement;
   actionLabel: string;
   disabled?: boolean;
+  deleteDialog?: boolean;
 }
 
 const Dialog: React.FC<ModalProps> = ({
@@ -33,6 +34,7 @@ const Dialog: React.FC<ModalProps> = ({
   actionLabel,
   disabled,
   onSubmit,
+  deleteDialog,
 }) => {
   const [showModal, setShowModal] = useState(isOpen);
 
@@ -53,7 +55,11 @@ const Dialog: React.FC<ModalProps> = ({
       <DialogContainer>
         <DialogTrigger asChild>{action}</DialogTrigger>
         {showModal ? (
-          <DialogContent className="max-w-[500px] h-[50vh] overflow-auto bg-white z-50 rounded-[8px]">
+          <DialogContent
+            className={`max-w-[500px] ${
+              deleteDialog ? "" : "h-[50vh]"
+            } overflow-auto bg-white z-50 rounded-[8px]`}
+          >
             <DialogHeader>
               <DialogTitle>{title}</DialogTitle>
               {description && (
@@ -61,15 +67,17 @@ const Dialog: React.FC<ModalProps> = ({
               )}
             </DialogHeader>
             {body && <div className="grid gap-4 py-4">{body}</div>}
-            {/* <DialogFooter>
-              <Button
-                variant="secondary"
-                onClick={handleSubmit}
-                disabled={disabled}
-              >
-                {actionLabel}
-              </Button>
-            </DialogFooter> */}
+            {/* {footer && (
+              <DialogFooter>
+                <Button
+                  variant="secondary"
+                  onClick={handleSubmit}
+                  disabled={disabled}
+                >
+                  {actionLabel}
+                </Button>
+              </DialogFooter>
+            )} */}
           </DialogContent>
         ) : null}
       </DialogContainer>

@@ -23,7 +23,7 @@ export default async function ContactDetailPage({
 
   return (
     <Container>
-      <DetailContactPage id={params?.id} contact={data?.contact_by_pk} />
+      <DetailContactPage contact={data?.contact_by_pk} />
     </Container>
   );
 }

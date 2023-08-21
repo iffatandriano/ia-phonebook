@@ -1,7 +1,11 @@
 import React from "react";
+import Container from "@/src/components/Container";
+import EditContactForm from "./EditContactForm";
 
-const EditContactDetail = () => {
-  return <div></div>;
-};
-
-export default EditContactDetail;
+export default function EditContactDetailPage() {
+  return (
+    <Container>
+      <EditContactForm />
+    </Container>
+  );
+}
