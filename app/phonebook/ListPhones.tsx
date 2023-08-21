@@ -29,7 +29,7 @@ const ListPhones: React.FC<ListPhonesProps> = ({ datas, page }) => {
         Array.from(searchParams.entries())
       );
       if (backPage === 0) {
-        currentParams.delete("page", undefined);
+        currentParams.delete("page");
         router.push(`${pathname}?${currentParams.toString()}`);
       } else {
         currentParams.set("page", `${page - 1}`);
