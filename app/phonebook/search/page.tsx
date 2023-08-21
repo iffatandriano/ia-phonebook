@@ -1,34 +1,39 @@
-"use client";
 import React from "react";
-import { ChevronLeft } from "lucide-react";
-import { useRouter } from "next/navigation";
 
 import Container from "@/src/components/Container";
-import { Button } from "@/src/components/ui/button";
-import { Input } from "@/src/components/ui/input";
+import SearchContact from "./SearchContact";
 
-export default function SearchPhonebookPage() {
-  const router = useRouter();
+import { getClient } from "@/src/graphql/client";
+import { Order_By } from "@/src/graphql/types.generated";
+import { FindContactByFirstnameDocument } from "@/src/graphql/contact/contacts.generated";
+
+interface IParams {
+  searchParams: {
+    query: string;
+  };
+}
+
+export default async function SearchPhonebookPage({ searchParams }: IParams) {
+  const { data } = await getClient().query({
+    query: FindContactByFirstnameDocument,
+    variables: {
+      limit: 10,
+      offset: 0,
+      order_by: {
+        created_at: Order_By.DescNullsFirst,
+      },
+      where: {
+        first_name: {
+          _like: `%${searchParams.query}%`,
+        },
+      },
+    },
+  });
+
   return (
     <Container>
       <div className="flex flex-col">
-        <div className="min-h-screen flex flex-col gap-3">
-          <div className="bg-white rounded-[8px]">
-            <div className="py-2 px-4 flex items-center gap-2">
-              <Button variant="ghost" onClick={() => router.back()}>
-                <ChevronLeft size={24} />
-              </Button>
-              <div className="w-full">
-                <Input
-                  type="text"
-                  placeholder="Search by phone, name"
-                  className="rounded-[8px]"
-                  autoFocus
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+        <SearchContact contact={data?.contact} />
       </div>
     </Container>
   );

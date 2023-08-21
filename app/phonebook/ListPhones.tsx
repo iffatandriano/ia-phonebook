@@ -56,10 +56,10 @@ const ListPhones: React.FC<ListPhonesProps> = ({ datas, page }) => {
         {datas?.map((contact: Contact) => (
           <CardGrid
             key={contact.id}
+            id={contact.id}
             first_name={contact.first_name}
             last_name={contact.last_name}
             phones={contact.phones}
-            onClick={() => {}}
           />
         ))}
       </div>

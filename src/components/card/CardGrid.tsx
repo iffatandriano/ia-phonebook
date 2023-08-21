@@ -1,4 +1,5 @@
 import React from "react";
+import { useRouter } from "next/navigation";
 import { MoreVertical } from "lucide-react";
 
 import { Button } from "../ui/button";
@@ -11,10 +12,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { useRouter } from "next/navigation";
 
 interface CardGridProps {
-  id: string;
+  id: number;
   first_name: string;
   last_name: string;
   phones: any;
