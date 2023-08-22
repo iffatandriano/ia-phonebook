@@ -16,7 +16,11 @@ import {
 } from "@/src/components/ui/dropdown-menu";
 import { usePathname, useRouter } from "next/navigation";
 
-const Filter = () => {
+interface FilterProps {
+  sort?: boolean;
+}
+
+const Filter: React.FC<FilterProps> = ({ sort }) => {
   const { setListViewMenu, listViewMenu } = useViewMenus();
 
   const router = useRouter();
@@ -31,25 +35,34 @@ const Filter = () => {
 
   return (
     <div className="mx-2 p-1">
-      <div className="flex justify-between items-center bg-white rounded-[8px]">
-        <div className="flex gap-2">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm">
-                Sort
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="ml-20">
-              <DropdownMenuRadioGroup value={sortBy} onValueChange={handleSort}>
-                <DropdownMenuRadioItem value="latest">
-                  Latest
-                </DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="a-z">A-Z</DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="z-a">Z-A</DropdownMenuRadioItem>
-              </DropdownMenuRadioGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+      <div
+        className={`flex ${
+          sort ? "justify-between items-center" : "justify-end items-end"
+        } bg-white rounded-[8px]`}
+      >
+        {sort && (
+          <div className="flex gap-2">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm">
+                  Sort
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="ml-20">
+                <DropdownMenuRadioGroup
+                  value={sortBy}
+                  onValueChange={handleSort}
+                >
+                  <DropdownMenuRadioItem value="latest">
+                    Latest
+                  </DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="a-z">A-Z</DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="z-a">Z-A</DropdownMenuRadioItem>
+                </DropdownMenuRadioGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        )}
         <div className="flex">
           <Button variant="ghost" onClick={() => setListViewMenu("list")}>
             <StretchHorizontal
