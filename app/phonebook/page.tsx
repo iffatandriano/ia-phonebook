@@ -65,7 +65,7 @@ export default async function PhonebookPage({
               </div>
             </div>
           </div>
-          <Filter />
+          <Filter sort />
           <ListPhones
             datas={data?.contact}
             page={Number(searchParams?.page) | 0}

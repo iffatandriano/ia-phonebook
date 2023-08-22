@@ -1,5 +1,6 @@
 import React from "react";
-import { MoreVertical } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { BookmarkIcon, MoreVertical } from "lucide-react";
 
 import { Button } from "@/src/components/ui/button";
 import {
@@ -11,14 +12,20 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+
+import Loading from "../Loading";
+
 import { Phone } from "@/src/utils/types";
-import { useRouter } from "next/navigation";
 
 interface CardListProps {
   id: number;
   first_name: string;
   last_name: string;
   phones: Array<Phone>;
+  isLoading?: boolean;
+  favorite?: boolean;
+  haveFavorite?: boolean;
+  handleFavorite?: () => void;
 }
 
 const CardList: React.FC<CardListProps> = ({
@@ -26,6 +33,10 @@ const CardList: React.FC<CardListProps> = ({
   first_name,
   last_name,
   phones,
+  isLoading,
+  favorite,
+  haveFavorite,
+  handleFavorite,
 }) => {
   const router = useRouter();
   return (
@@ -42,22 +53,36 @@ const CardList: React.FC<CardListProps> = ({
           <span className="text-[10px] text-zinc-400">{phones[0]?.number}</span>
         </div>
       </div>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="sm">
-            <MoreVertical size={16} />
+      <div className="flex items-center">
+        {favorite && (
+          <Button variant="ghost" size="sm" onClick={handleFavorite}>
+            {isLoading ? (
+              <Loading />
+            ) : (
+              <BookmarkIcon
+                className="w-4 h-4"
+                color={haveFavorite ? "#16A34A" : "#000"}
+              />
+            )}
           </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="z-10 mr-12 bg-white rounded-[8px]">
-          <DropdownMenuGroup>
-            <DropdownMenuItem
-              onClick={() => router.push(`/phonebook/contact/${id}`)}
-            >
-              View details
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
+        )}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="sm">
+              <MoreVertical size={16} />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="z-10 mr-12 bg-white rounded-[8px]">
+            <DropdownMenuGroup>
+              <DropdownMenuItem
+                onClick={() => router.push(`/phonebook/contact/${id}`)}
+              >
+                View details
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
     </div>
   );
 };

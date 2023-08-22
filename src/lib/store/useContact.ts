@@ -6,6 +6,7 @@ interface ContactProps {
   contacts: Array<Contact>;
   setPage: (page: number) => void;
   setContacts: (contacts: Contact[]) => void;
+  removeContacts: (id: number) => void;
 }
 
 const useContact = create<ContactProps>((set) => ({
@@ -29,6 +30,10 @@ const useContact = create<ContactProps>((set) => ({
     set({
       contacts: contact,
     }),
+  removeContacts: (id) =>
+    set((prev) => ({
+      contacts: prev.contacts.filter((item) => item.id !== id),
+    })),
 }));
 
 export default useContact;

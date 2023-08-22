@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import _ from "lodash";
 
@@ -9,6 +9,10 @@ import CardList from "@/src/components/card/CardList";
 import useViewMenus from "@/src/lib/store/useMenu";
 import { Contact } from "@/src/utils/types";
 import Pagination from "@/src/components/Pagination";
+import useContact from "@/src/lib/store/useContact";
+import useFavorite from "@/src/lib/store/useFavorite";
+import useFavoriteStore from "@/src/utils/hooks/useFavoriteStore";
+import { useToast } from "@/src/components/ui/use-toast";
 
 interface ListPhonesProps {
   datas: any;
@@ -16,11 +20,24 @@ interface ListPhonesProps {
 }
 
 const ListPhones: React.FC<ListPhonesProps> = ({ datas, page }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const { listViewMenu } = useViewMenus();
+  const { contacts, setContacts, removeContacts } = useContact();
+  const { setFavorites } = useFavorite();
+  const favorites = useFavoriteStore(useFavorite, (state) => state.favorites);
+
+  const { toast } = useToast();
 
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+
+  useEffect(() => {
+    if (datas) {
+      setContacts(datas);
+    }
+  }, [datas, setContacts]);
 
   const previousPage = useCallback(
     (page: number) => {
@@ -50,16 +67,39 @@ const ListPhones: React.FC<ListPhonesProps> = ({ datas, page }) => {
     [pathname, router, searchParams]
   );
 
+  const handleFavorite = useCallback(
+    async (favorite: any) => {
+      setIsLoading(true);
+
+      await setFavorites(favorite);
+      await removeContacts(favorite.id);
+
+      toast({
+        description: (
+          <span className="mt-2 rounded-md p-2 text-green-600 text-sm font-semibold">
+            Your contact has been saved to favorite.
+          </span>
+        ),
+      });
+
+      setIsLoading(false);
+    },
+    [setFavorites, setIsLoading, removeContacts, toast]
+  );
+
   return listViewMenu === "list-grid" ? (
     <React.Fragment>
       <div className="grid grid-cols-2 gap-4 mx-2 p-1">
-        {datas?.map((contact: Contact) => (
+        {contacts?.map((contact: Contact) => (
           <CardGrid
             key={contact.id}
             id={contact.id}
             first_name={contact.first_name}
             last_name={contact.last_name}
             phones={contact.phones}
+            isLoading={isLoading}
+            handleFavorite={() => handleFavorite(contact)}
+            favorite
           />
         ))}
       </div>
@@ -73,15 +113,24 @@ const ListPhones: React.FC<ListPhonesProps> = ({ datas, page }) => {
   ) : (
     <div className="mx-2 p-1 bg-white rounded-[8px]">
       <div className="py-2 px-4 flex flex-col gap-4">
-        {datas?.map((contact: Contact) => (
-          <CardList
-            key={contact.id}
-            id={contact.id}
-            first_name={contact.first_name}
-            last_name={contact.last_name}
-            phones={contact.phones}
-          />
-        ))}
+        {contacts
+          ?.filter(
+            (item) =>
+              !_.some(favorites, (favorite: any) => favorite.id === item.id) &&
+              item
+          )
+          .map((contact: Contact) => (
+            <CardList
+              key={contact.id}
+              id={contact.id}
+              first_name={contact.first_name}
+              last_name={contact.last_name}
+              phones={contact.phones}
+              isLoading={isLoading}
+              handleFavorite={() => handleFavorite(contact)}
+              favorite
+            />
+          ))}
       </div>
       <Pagination
         datas={datas}
