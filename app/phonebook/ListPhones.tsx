@@ -13,6 +13,7 @@ import useContact from "@/src/lib/store/useContact";
 import useFavorite from "@/src/lib/store/useFavorite";
 import useFavoriteStore from "@/src/utils/hooks/useFavoriteStore";
 import { useToast } from "@/src/components/ui/use-toast";
+import CardListSkeleton from "@/src/components/skeletons/card/CardListSkeleton";
 
 interface ListPhonesProps {
   datas: any;
@@ -20,6 +21,7 @@ interface ListPhonesProps {
 }
 
 const ListPhones: React.FC<ListPhonesProps> = ({ datas, page }) => {
+  const [isLoadingData, setIsLoadingData] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { listViewMenu } = useViewMenus();
@@ -34,8 +36,12 @@ const ListPhones: React.FC<ListPhonesProps> = ({ datas, page }) => {
   const searchParams = useSearchParams();
 
   useEffect(() => {
+    setIsLoadingData(true);
     if (datas) {
       setContacts(datas);
+      setTimeout(() => {
+        setIsLoadingData(false);
+      }, 3000);
     }
   }, [datas, setContacts]);
 
@@ -87,6 +93,10 @@ const ListPhones: React.FC<ListPhonesProps> = ({ datas, page }) => {
     [setFavorites, setIsLoading, removeContacts, toast]
   );
 
+  if (isLoadingData) {
+    return <CardListSkeleton />;
+  }
+
   return listViewMenu === "list-grid" ? (
     <React.Fragment>
       <div className="grid grid-cols-2 gap-4 mx-2 p-1">
@@ -103,12 +113,14 @@ const ListPhones: React.FC<ListPhonesProps> = ({ datas, page }) => {
           />
         ))}
       </div>
-      <Pagination
-        datas={datas}
-        page={page}
-        previousPage={previousPage}
-        nextPage={nextPage}
-      />
+      {!_.isEmpty(contacts) && (
+        <Pagination
+          datas={contacts}
+          page={page}
+          previousPage={previousPage}
+          nextPage={nextPage}
+        />
+      )}
     </React.Fragment>
   ) : (
     <div className="mx-2 p-1 bg-white rounded-[8px]">
@@ -132,12 +144,14 @@ const ListPhones: React.FC<ListPhonesProps> = ({ datas, page }) => {
             />
           ))}
       </div>
-      <Pagination
-        datas={datas}
-        page={page}
-        previousPage={previousPage}
-        nextPage={nextPage}
-      />
+      {!_.isEmpty(contacts) && (
+        <Pagination
+          datas={contacts}
+          page={page}
+          previousPage={previousPage}
+          nextPage={nextPage}
+        />
+      )}
     </div>
   );
 };

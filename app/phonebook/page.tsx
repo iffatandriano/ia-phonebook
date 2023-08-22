@@ -15,6 +15,8 @@ import { getClient } from "@/src/graphql/client";
 import { GetContactListDocument } from "@/src/graphql/contact/contacts.generated";
 import _ from "lodash";
 import { Order_By } from "@/src/graphql/types.generated";
+import Header from "@/src/components/Header";
+import CardListSkeleton from "@/src/components/skeletons/card/CardListSkeleton";
 
 export const dynamic = "force-dynamic";
 
@@ -25,7 +27,7 @@ interface PhonebookPageProps {
 export default async function PhonebookPage({
   searchParams,
 }: PhonebookPageProps) {
-  const { data } = await getClient().query({
+  const { data, loading } = await getClient().query({
     query: GetContactListDocument,
     variables: {
       limit: 10,
@@ -48,28 +50,31 @@ export default async function PhonebookPage({
     },
   });
 
+  const actionHeader = (
+    <>
+      <Link href="/phonebook/search">
+        <Button variant="ghost">
+          <Search size={22} />
+        </Button>
+      </Link>
+      <AddPhoneDialog />
+    </>
+  );
+
   return (
     <Container>
       <div className="flex flex-col">
         <div className="min-h-screen flex flex-col gap-1 mb-16">
-          <div className="bg-white rounded-[8px]">
-            <div className="flex py-2 px-4 justify-between items-center">
-              <h1 className="font-semibold text-md">Phonebook</h1>
-              <div className="flex flex-row items-center">
-                <Link href="/phonebook/search">
-                  <Button variant="ghost">
-                    <Search size={22} />
-                  </Button>
-                </Link>
-                <AddPhoneDialog />
-              </div>
-            </div>
-          </div>
+          <Header name="Phonebook" action={actionHeader} />
           <Filter sort />
-          <ListPhones
-            datas={data?.contact}
-            page={Number(searchParams?.page) | 0}
-          />
+          {loading ? (
+            <CardListSkeleton />
+          ) : (
+            <ListPhones
+              datas={data?.contact}
+              page={Number(searchParams?.page) | 0}
+            />
+          )}
         </div>
         <Navbar />
       </div>

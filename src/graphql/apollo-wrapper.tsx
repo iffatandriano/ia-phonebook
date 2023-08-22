@@ -10,6 +10,8 @@ import {
 import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 import { setVerbosity } from "ts-invariant";
 
+import env from "../configs/environment";
+
 if (process.env.NODE_ENV === "development") {
   setVerbosity("debug");
   loadDevMessages();
@@ -18,7 +20,7 @@ if (process.env.NODE_ENV === "development") {
 
 function makeClient() {
   const httpLink = new HttpLink({
-    uri: "https://wpe-hiring.tokopedia.net/graphql",
+    uri: env.GRAPHQL_URL,
   });
 
   return new NextSSRApolloClient({
