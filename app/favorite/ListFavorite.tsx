@@ -44,9 +44,13 @@ const ListFavorite = () => {
 
   return listViewMenu === "list-grid" ? (
     <React.Fragment>
-      <div className="grid grid-cols-2 gap-4 mx-2 p-1">
+      <div
+        className={`grid ${
+          !_.isEmpty(favorites) ? "grid-cols-2 mx-2 p-1" : ""
+        } gap-4`}
+      >
         {_.isUndefined(favorites) || _.isEmpty(favorites) ? (
-          <div className="mx-2 p-1 bg-white rounded-[8px]">
+          <div className="max-w-[500px] mx-2 p-1 bg-white rounded-[8px]">
             <div className="py-2 px-4 flex flex-col gap-4">
               <span className="flex justify-center items-center text-sm text-red-500 font-medium">
                 You dont have any favorite yet.

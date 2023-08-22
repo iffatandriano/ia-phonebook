@@ -3,17 +3,19 @@ import React, { useCallback, useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import _ from "lodash";
 
+import { useToast } from "@/src/components/ui/use-toast";
+
 import CardGrid from "@/src/components/card/CardGrid";
 import CardList from "@/src/components/card/CardList";
+import CardListSkeleton from "@/src/components/skeletons/card/CardListSkeleton";
+import Pagination from "@/src/components/Pagination";
 
 import useViewMenus from "@/src/lib/store/useMenu";
-import { Contact } from "@/src/utils/types";
-import Pagination from "@/src/components/Pagination";
-import useContact from "@/src/lib/store/useContact";
 import useFavorite from "@/src/lib/store/useFavorite";
+import useContact from "@/src/lib/store/useContact";
 import useFavoriteStore from "@/src/utils/hooks/useFavoriteStore";
-import { useToast } from "@/src/components/ui/use-toast";
-import CardListSkeleton from "@/src/components/skeletons/card/CardListSkeleton";
+
+import { Contact } from "@/src/utils/types";
 
 interface ListPhonesProps {
   datas: any;
@@ -95,44 +97,12 @@ const ListPhones: React.FC<ListPhonesProps> = ({ datas, page }) => {
 
   if (isLoadingData) {
     return <CardListSkeleton />;
-  }
-
-  return listViewMenu === "list-grid" ? (
-    <React.Fragment>
-      <div className="grid grid-cols-2 gap-4 mx-2 p-1">
-        {contacts?.map((contact: Contact) => (
-          <CardGrid
-            key={contact.id}
-            id={contact.id}
-            first_name={contact.first_name}
-            last_name={contact.last_name}
-            phones={contact.phones}
-            isLoading={isLoading}
-            handleFavorite={() => handleFavorite(contact)}
-            favorite
-          />
-        ))}
-      </div>
-      {!_.isEmpty(contacts) && (
-        <Pagination
-          datas={contacts}
-          page={page}
-          previousPage={previousPage}
-          nextPage={nextPage}
-        />
-      )}
-    </React.Fragment>
-  ) : (
-    <div className="mx-2 p-1 bg-white rounded-[8px]">
-      <div className="py-2 px-4 flex flex-col gap-4">
-        {contacts
-          ?.filter(
-            (item) =>
-              !_.some(favorites, (favorite: any) => favorite.id === item.id) &&
-              item
-          )
-          .map((contact: Contact) => (
-            <CardList
+  } else {
+    return listViewMenu === "list-grid" ? (
+      <React.Fragment>
+        <div className="grid grid-cols-2 gap-4 mx-2 p-1">
+          {contacts?.map((contact: Contact) => (
+            <CardGrid
               key={contact.id}
               id={contact.id}
               first_name={contact.first_name}
@@ -143,17 +113,51 @@ const ListPhones: React.FC<ListPhonesProps> = ({ datas, page }) => {
               favorite
             />
           ))}
+        </div>
+        {!_.isEmpty(contacts) && (
+          <Pagination
+            datas={contacts}
+            page={page}
+            previousPage={previousPage}
+            nextPage={nextPage}
+          />
+        )}
+      </React.Fragment>
+    ) : (
+      <div className="mx-2 p-1 bg-white rounded-[8px]">
+        <div className="py-2 px-4 flex flex-col gap-4">
+          {contacts
+            ?.filter(
+              (item) =>
+                !_.some(
+                  favorites,
+                  (favorite: any) => favorite.id === item.id
+                ) && item
+            )
+            .map((contact: Contact) => (
+              <CardList
+                key={contact.id}
+                id={contact.id}
+                first_name={contact.first_name}
+                last_name={contact.last_name}
+                phones={contact.phones}
+                isLoading={isLoading}
+                handleFavorite={() => handleFavorite(contact)}
+                favorite
+              />
+            ))}
+        </div>
+        {!_.isEmpty(contacts) && (
+          <Pagination
+            datas={contacts}
+            page={page}
+            previousPage={previousPage}
+            nextPage={nextPage}
+          />
+        )}
       </div>
-      {!_.isEmpty(contacts) && (
-        <Pagination
-          datas={contacts}
-          page={page}
-          previousPage={previousPage}
-          nextPage={nextPage}
-        />
-      )}
-    </div>
-  );
+    );
+  }
 };
 
 export default ListPhones;
